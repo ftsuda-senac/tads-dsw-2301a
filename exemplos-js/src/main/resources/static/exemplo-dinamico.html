@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div>
+      <h1>Exemplo JS - atualização dinâmica</h1>
+      <button id="btnCarregarDados">Carregar dados</button>
+      <h2 id="nome">XXXXX</h2>
+      <p>E-mail: <span id="email"></span></p>
+      <p>Telefone: <span id="telefone"></span></p>
+      <p>Data nascimento: <span id="dataNascimento"></span></p>
+      <p>Conhecimentos:</p>
+      <ul id="conhecimentos">
+      </ul>
+    </div>
+    <script>
+      let dadosPessoa = {
+        nome: 'Fulano da Silva',
+        email: 'fulano@teste.com.br',
+        telefone: '(11) 99999-1234',
+        dataNascimento: '2000-10-20',
+        conhecimentos: ['Java', 'HTML', 'CSS', 'Javascript']
+      };
+
+      function carregarDados() {
+        document.getElementById('nome').innerHTML = dadosPessoa.nome;
+        document.getElementById('email').innerHTML = dadosPessoa.email;
+        document.getElementById('telefone').innerHTML = dadosPessoa.telefone;
+        document.getElementById('dataNascimento').innerHTML = dadosPessoa.dataNascimento;
+
+        let elUl = document.getElementById('conhecimentos');
+        for (let i = 0; i < dadosPessoa.conhecimentos.length; i++) {
+          elUl.insertAdjacentHTML('beforeend', '<li>' + dadosPessoa.conhecimentos[i] + '</li>');
+        }
+      }
+      document.getElementById('btnCarregarDados').onclick = carregarDados;
+    </script>
+  </body>
+</html>

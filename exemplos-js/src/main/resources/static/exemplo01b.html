@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      .multiplo3 {
+        border: 2px dotted red;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Exemplo 1 - Mostrar 1000 itens</h1>
+      <button id="btnRodar">Carregar itens</button>
+      <button id="btnRodar2">Identificar multiplos</button>
+      <ul id="resultado">
+
+      </ul>
+    </div>
+    <script>
+      function mostrar1000Itens() {
+        let elLista = document.getElementById('resultado');
+
+        for (let i = 1; i <= 1000; i++) {
+           elLista.insertAdjacentHTML('afterbegin', '<li>Item ' + i + '</li>');
+        }
+      }
+
+      function encontrarMultiplos() {
+        let elArr = document.querySelectorAll('li');
+
+        for (let i = 0; i < elArr.length; i++) {
+          if (i % 3 === 0) {
+            elArr[i].classList.add('multiplo3');
+          }
+          if (i % 4 === 0) {
+            elArr[i].style.color = '#f00';
+            elArr[i].style.backgroundColor = '#0f0';
+          }
+        }
+      }
+
+      document.getElementById('btnRodar').onclick = mostrar1000Itens;
+      document.getElementById('btnRodar2').onclick = encontrarMultiplos;
+    </script>
+  </body>
+</html>

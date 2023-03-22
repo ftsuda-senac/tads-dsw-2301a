@@ -1,0 +1,7 @@
+{
+  "nome": "Fulano da Silva",
+  "email": "fulano@teste.com.br",
+  "telefone": "(11) 99999-1234",
+  "dataNascimento": "2000-10-20",
+  "conhecimentos": ["Java", "HTML", "CSS", "Javascript"]
+}

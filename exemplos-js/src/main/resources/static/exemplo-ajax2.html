@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div>
+      <h1>Exemplo JS - Requisição assincrona 2 - Array de dados</h1>
+      <button id="btnCarregarDados">Carregar dados</button>
+      <div id="resultado"></div>
+    </div>
+    <script>
+
+      function mostrarDadosTela(dadosPessoa) {
+        let itemHtml = '<h2>' + dadosPessoa.nome + '</h2>' +
+            '<p>E-mail: <span>' + dadosPessoa.email + '</span></p>' +
+            '<p>Telefone: <span>' + dadosPessoa.telefone + '</span></p>' +
+            '<p>Data nascimento: <span>' + dadosPessoa.dataNascimento + '</span></p>';
+
+        if (dadosPessoa.conhecimentos.length > 0) {
+          itemHtml += '<p>Conhecimentos</p><ul>';
+          for (let ch of dadosPessoa.conhecimentos) {
+            itemHtml += '<li>' + ch + '</li>';
+          }
+          itemHtml += '</ul>';
+        } else {
+          itemHtml += '<p>Conhecimentos: <em>Não tem</em></p>';
+        }
+        document.getElementById('resultado').insertAdjacentHTML('beforeend', itemHtml);
+      }
+
+      function carregarDados() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', 'dadosArray.json', true);
+
+        // callback - função executado ao término da requisição
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            let dadosPessoaArr = JSON.parse(xhr.responseText);
+            document.getElementById('resultado').innerHTML  = ''; // <-- Limpa o div
+            for (let dadosPessoa of dadosPessoaArr) {
+              mostrarDadosTela(dadosPessoa);
+            }
+          } else {
+            alert('Erro: ' + xhr.status);
+          }
+        };
+
+        xhr.send();
+      }
+
+      // document.getElementById('btnCarregarDados').onclick = carregarDados;
+      
+      // document.getElementById('btnCarregarDados').addEventListener('click', carregarDados);
+
+      document.getElementById('btnCarregarDados').addEventListener('click', function() {
+        carregarDados();
+      });
+
+    </script>
+  </body>
+</html>
