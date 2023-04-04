@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Exemplo HTML estático com atualização JS</title>
+</head>
+<body>
+  <h1>Exemplo HTML estático com atualização JS</h1>
+  <p>Data e hora atual: <span id="dataHora"></span></p>
+  <script>
+      function getLocalISOString(date) {
+        const offset = date.getTimezoneOffset()
+        const offsetAbs = Math.abs(offset)
+        const isoString = new Date(date.getTime() - offset * 60000).toISOString()
+        //return `${isoString.slice(0, -1)}${offset > 0 ? '-' : '+'}${String(Math.floor(offsetAbs / 60)).padStart(2, '0')}:${String(offsetAbs % 60).padStart(2, '0')}`
+        return isoString.slice(0, -1)
+      }
+      document.getElementById("dataHora").innerHTML = getLocalISOString(new Date())
+    </script>
+</body>
+</html>

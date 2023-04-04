@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Exemplo HTML estático com atualização AJAX</title>
+</head>
+<body>
+  <h1>Exemplo HTML com atualização AJAX</h1>
+  <p>Data e hora atual: <span id="dataHora"></span></p>
+  <script>
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.open('GET', 'exemplo-ajax-servlet', true);
+    
+    xhr.onload = function() {
+      if (this.status === 200) {
+        const resposta = this.response
+        console.log(JSON.stringify(resposta))
+    
+        // Adicionar valor recebido no HTML
+        document.getElementById('dataHora').innerHTML = resposta.dataHora
+      }
+    }
+    xhr.send();
+  </script>
+</body>
+</html>
