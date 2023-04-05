@@ -69,4 +69,21 @@ public class AppHtmlServlet extends HttpServlet {
         }
     }
 
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+
+        String retornoJson = "{ " + System.lineSeparator() +
+                "\"nome\": \"" + nome + "\"," + System.lineSeparator() +
+                "\"email\": \"" + email + "\" " + System.lineSeparator() + "}";
+
+        System.out.println("***** Dados recebidos: " + nome + ", " + email);
+        response.setContentType("application/json");
+        try (PrintWriter out = response.getWriter()) {
+            out.println(retornoJson);
+        }
+    }
+
 }
