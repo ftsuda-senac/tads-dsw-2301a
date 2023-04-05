@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TODO supply a title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div>
+  <h1>Exemplo JS - Requisição assíncrona com Promise</h1>
+  <button id="btnCarregarDados">Carregar dados</button>
+  <h2 id="nome">XXXXX</h2>
+  <p>E-mail: <span id="email"></span></p>
+  <p>Telefone: <span id="telefone"></span></p>
+  <p>Data nascimento: <span id="dataNascimento"></span></p>
+  <p>Conhecimentos:</p>
+  <ul id="conhecimentos">
+  </ul>
+</div>
+<script>
+
+      function mostrarDadosTela(dadosPessoa) {
+        document.getElementById('nome').innerHTML = dadosPessoa.nome;
+        document.getElementById('email').innerHTML = dadosPessoa.email;
+
+        let elUl = document.getElementById('conhecimentos');
+        for (let i = 0; i < dadosPessoa.conhecimentos.length; i++) {
+          elUl.insertAdjacentHTML('beforeend', '<li>' + dadosPessoa.conhecimentos[i] + '</li>');
+        }
+      }
+
+      function buscarDados(urlJson) {
+        return new Promise(function(resolve, reject) {
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', urlJson, true);
+
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              resolve(JSON.parse(xhr.responseText));
+            } else {
+              reject({
+                codigo:  xhr.status,
+                mensagem: 'Erro ao buscar dados'
+              });
+            }
+          };
+
+          xhr.send();
+        });
+      }
+
+      function carregarDados() {
+        buscarDados('ex03').then(function(dadosPessoa) {
+          mostrarDadosTela(dadosPessoa);
+        }).catch(function(erro) {
+          alert('ERRO Código: ' + erro.codigo + ', mensagem: ' + erro.mensagem);
+        });
+      }
+
+      document.getElementById('btnCarregarDados').onclick = carregarDados;
+
+    </script>
+</body>
+</html>
