@@ -9,6 +9,7 @@
 <body>
 <div class="container-md">
   <div class="row">
+    <h1>Exemplo POST via form</h1>
     <form id="frmDadosPessoais">
       <div class="mb-3">
         <label for="txtNome" class="form-label">Nome</label>
@@ -84,7 +85,8 @@
         evt.preventDefault();
 
         let conhecimentos = [];
-        const elConhecimentos = document.querySelectorAll('input[name="conhecimentos"]:checked');
+        const elConhecimentos = document
+          .querySelectorAll('input[name="conhecimentos"]:checked');
         for (const elInput of elConhecimentos) {
           conhecimentos.push(elInput.value);
         }
@@ -100,7 +102,7 @@
         };
         console.log(JSON.stringify(dados));
         enviarDados('dados-pessoais', dados).then(function(resp) {
-          alert(resp);
+          alert(JSON.stringify(resp));
         }).catch(function(err) {
           alert(err);
         });
