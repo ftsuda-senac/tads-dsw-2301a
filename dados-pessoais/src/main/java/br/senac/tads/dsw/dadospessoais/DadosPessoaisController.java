@@ -1,5 +1,6 @@
 package br.senac.tads.dsw.dadospessoais;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -30,6 +31,12 @@ public class DadosPessoaisController {
 
     @PostMapping(consumes = "application/json")
     public DadosPessoais incluirNovo(@RequestBody DadosPessoais dados) {
+        mapPessoas.put(dados.getApelido(), dados);
+        return dados;
+    }
+
+    @PostMapping("/validacao")
+    public DadosPessoais incluirNovoComValidacao(@RequestBody @Valid DadosPessoais dados) {
         mapPessoas.put(dados.getApelido(), dados);
         return dados;
     }

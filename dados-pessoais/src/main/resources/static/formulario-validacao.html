@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-md">
+  <div class="row">
+    <h1>Exemplo POST via form + validação</h1>
+    <form id="frmDadosPessoais" novalidate>
+      <div class="mb-3">
+        <label for="txtNome" class="form-label">Nome</label>
+        <input type="text" class="form-control" name="nome"
+               id="txtNome" placeholder="Nome completo" maxlength="100" required />
+      </div>
+      <div class="mb-3">
+        <label for="txtApelido" class="form-label">Apelido</label>
+        <input type="text" class="form-control" name="apelido"
+               id="txtApelido" placeholder="Apelido" maxlength="64" required />
+      </div>
+      <div class="mb-3">
+        <label for="txtEmail" class="form-label">E-mail</label>
+        <input type="email" class="form-control" name="email"
+               id="txtEmail"placeholder="E-mail válido" maxlength="200" required />
+      </div>
+      <div class="mb-3">
+        <label for="txtTelefone" class="form-label">Telefone</label>
+        <input type="text" class="form-control" name="telefone"
+               id="txtTelefone" placeholder="Telefone" maxlength="16" />
+      </div>
+      <div class="mb-3">
+        <label for="txtSenha" class="form-label">Senha</label>
+        <input type="password" class="form-control" name="senha"
+               id="txtSenha" placeholder="Senha" minlength="8" />
+      </div>
+      <div class="mb-3">
+        <label for="txtDataNascimento" class="form-label">Data nascimento</label>
+        <input type="date" class="form-control" name="dataNascimento"
+               id="txtDataNascimento" max="2023-04-25" />
+      </div>
+      <fieldset>
+        <legend>Conhecimentos</legend>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="conhecimentos" id="chkConhecimento1" value="Java">
+          <label class="form-check-label" for="chkConhecimento1">Java</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="conhecimentos" id="chkConhecimento2" value="HTML">
+          <label class="form-check-label" for="chkConhecimento2">HTML</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="conhecimentos" id="chkConhecimento3" value="CSS">
+          <label class="form-check-label" for="chkConhecimento3">CSS</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="conhecimentos" id="chkConhecimento4" value="Javascript">
+          <label class="form-check-label" for="chkConhecimento4">Javascript</label>
+        </div>
+      </fieldset>
+      <button class="btn btn-success btn-lg" type="submit">Enviar</button>
+    </form>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script>
+      function limparErros() {
+        const elInputs = document.querySelectorAll('.is-invalid');
+        for (const elInput of elInputs) {
+          elInput.classList.remove('is-invalid');
+        }
+        const elMsgErros = document.querySelectorAll('.invalid-feedback');
+        for (const elMsgErro of elMsgErros) {
+          elMsgErro.remove();
+        }
+      }
+
+      function enviarDados(urlJson, dados) {
+        return new Promise(function(resolve, reject) {
+          let xhr = new XMLHttpRequest();
+          xhr.open('POST', urlJson, true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              resolve(JSON.parse(xhr.responseText));
+            } else {
+              reject({
+                codigo:  xhr.status,
+                mensagem: 'Erro ao buscar dados',
+                erros: JSON.parse(xhr.responseText).errors.map(
+                  (erro) => ({ campoErro: erro.field, mensagem: erro.defaultMessage })
+                 )
+              });
+            }
+          };
+          xhr.send(JSON.stringify(dados));
+        });
+      }
+
+      const elFormulario = document.getElementById('frmDadosPessoais');
+      elFormulario.onsubmit = function(evt) {
+        evt.preventDefault();
+        limparErros();
+
+        let conhecimentos = [];
+        const elConhecimentos = document
+          .querySelectorAll('input[name="conhecimentos"]:checked');
+        for (const elInput of elConhecimentos) {
+          conhecimentos.push(elInput.value);
+        }
+
+        let dados = {
+          nome: elFormulario.nome.value,
+          apelido: elFormulario.apelido.value,
+          email: elFormulario.email.value,
+          telefone: elFormulario.telefone.value,
+          senha: elFormulario.senha.value,
+          dataNascimento: elFormulario.dataNascimento.value,
+          conhecimentos: conhecimentos
+        };
+        console.log(JSON.stringify(dados));
+        enviarDados('dados-pessoais/validacao', dados).then(function(resp) {
+          alert(JSON.stringify(resp));
+        }).catch(function(err) {
+          console.log(JSON.stringify(err, null, 2));
+          if (err.codigo === 400) {
+            // Logica adicional para apresentar os erros na tela
+            for (const erro of err.erros) {
+              // "mensagem" : "tamanho deve ser entre 8 e 2147483647",
+              // "campoErro" : "senha",
+              const elInput = document.querySelector('input[name=' + erro.campoErro + ']');
+              elInput.classList.add('is-invalid');
+              elInput.insertAdjacentHTML(
+                'afterend', '<p class="invalid-feedback">' + erro.mensagem + '</p>');
+            }
+          } else {
+            alert(JSON.stringify(err));
+          }
+        });
+      }
+
+</script>
+</body>
+</html>
