@@ -1,6 +1,7 @@
 package br.senac.tads.dsw.dadospessoais;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
@@ -9,15 +10,23 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table(name = "pessoa")
 public class DadosPessoais {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @NotBlank(message = "Preencha seu nome seu animal")
     @Size(max = 100)
+    @Column(name = "nome_completo")
     private String nome;
 
     //@JsonProperty("nome_social")
     @NotBlank
     @Size(max = 64)
+    @Column(unique = true)
     private String apelido;
 
     @NotBlank
@@ -35,6 +44,7 @@ public class DadosPessoais {
     private LocalDate dataNascimento;
 
     @Size(min = 1)
+    @Transient
     private List<String> conhecimentos;
 
     public DadosPessoais(String nome, String apelido, String email, String telefone, String senha, LocalDate dataNascimento, List<String> conhecimentos) {
