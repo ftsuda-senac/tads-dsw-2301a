@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "pessoa")
@@ -44,75 +45,97 @@ public class DadosPessoais {
     private LocalDate dataNascimento;
 
     @Size(min = 1)
-    @Transient
-    private List<String> conhecimentos;
+    @ManyToMany
+    @JoinTable(name = "pessoa_conhecimento",
+            joinColumns = @JoinColumn(name = "pessoa_id"),
+            inverseJoinColumns = @JoinColumn(name = "conhecimento_id"))
+    private Set<Conhecimento> conhecimentos;
 
-    public DadosPessoais(String nome, String apelido, String email, String telefone, String senha, LocalDate dataNascimento, List<String> conhecimentos) {
+    @OneToMany(mappedBy = "pessoa")
+    private Set<FotoPessoa> fotos;
+
+    public DadosPessoais(String nome, String apelido, String email, String telefone, String senha, LocalDate dataNascimento) {
         this.nome = nome;
         this.apelido = apelido;
         this.email = email;
         this.telefone = telefone;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
-        this.conhecimentos = conhecimentos;
     }
 
     public DadosPessoais() {
     }
 
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getNome() {
-        return this.nome;
-    }
-
-    public String getApelido() {
-        return this.apelido;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public String getTelefone() {
-        return this.telefone;
-    }
-
-    public String getSenha() {
-        return this.senha;
-    }
-
-    public LocalDate getDataNascimento() {
-        return this.dataNascimento;
-    }
-
-    public List<String> getConhecimentos() {
-        return this.conhecimentos;
+        return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+    public String getApelido() {
+        return apelido;
+    }
+
     public void setApelido(String apelido) {
         this.apelido = apelido;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getTelefone() {
+        return telefone;
+    }
+
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getSenha() {
+        return senha;
     }
 
     public void setSenha(String senha) {
         this.senha = senha;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public void setConhecimentos(List<String> conhecimentos) {
+    public Set<Conhecimento> getConhecimentos() {
+        return conhecimentos;
+    }
+
+    public void setConhecimentos(Set<Conhecimento> conhecimentos) {
         this.conhecimentos = conhecimentos;
+    }
+
+    public Set<FotoPessoa> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(Set<FotoPessoa> fotos) {
+        this.fotos = fotos;
     }
 }

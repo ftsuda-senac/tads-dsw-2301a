@@ -14,7 +14,7 @@ public class DadosPessoaisController {
 
     public DadosPessoaisController() {
         mapPessoas = new LinkedHashMap<>();
-        DadosPessoais dados = new DadosPessoais("Fulano da Silva", "fulano", "fulano@teste.com.br", "(11) 99901-0909", "Abcd$1234", LocalDate.parse("2000-10-20"), Arrays.asList("Java", "HTML", "CSS", "Javascript"));
+        DadosPessoais dados = new DadosPessoais("Fulano da Silva", "fulano", "fulano@teste.com.br", "(11) 99901-0909", "Abcd$1234", LocalDate.parse("2000-10-20"));
         mapPessoas.put(dados.getApelido(), dados);
     }
 

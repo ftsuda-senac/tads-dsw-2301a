@@ -15,6 +15,10 @@ public class FotoPessoa {
     @Column(length = 1024)
     private String legenda;
 
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id")
+    private DadosPessoais pessoa;
+
     public Integer getId() {
         return id;
     }
@@ -37,5 +41,13 @@ public class FotoPessoa {
 
     public void setLegenda(String legenda) {
         this.legenda = legenda;
+    }
+
+    public DadosPessoais getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(DadosPessoais pessoa) {
+        this.pessoa = pessoa;
     }
 }
