@@ -41,7 +41,7 @@
         <input type="date" class="form-control" name="dataNascimento"
                id="txtDataNascimento" max="2023-04-25" />
       </div>
-      <fieldset>
+      <fieldset id="fieldConhecimentos">
         <legend>Conhecimentos</legend>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" name="conhecimentos" id="chkConhecimento1" value="Java">
@@ -77,6 +77,33 @@
         }
       }
 
+        function buscarDadosJson(urlJson, params) {
+            // Versão com função anônima
+            return new Promise(function (resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                let urlAjustada = urlJson;
+                if (params) {
+                    urlAjustada = urlAjustada + '?' + params
+                }
+                xhr.open('GET', urlJson, true);
+
+                xhr.setRequestHeader('Content-type', 'application/json');
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        const dadosArr = JSON.parse(xhr.responseText);
+                        resolve(dadosArr);
+                    } else {
+                        reject({
+                            status: xhr.status,
+                            mensagem: 'Erro na requisição'
+                        });
+                    }
+                };
+                xhr.send();
+            });
+        }
+
       function enviarDados(urlJson, dados) {
         return new Promise(function(resolve, reject) {
           let xhr = new XMLHttpRequest();
@@ -90,7 +117,7 @@
               reject({
                 codigo:  xhr.status,
                 mensagem: 'Erro ao buscar dados',
-                erros: JSON.parse(xhr.responseText).errors.map(
+                erros: JSON.parse(xhr.responseText)?.errors.map(
                   (erro) => ({ campoErro: erro.field, mensagem: erro.defaultMessage })
                  )
               });
@@ -122,7 +149,7 @@
           conhecimentos: conhecimentos
         };
         console.log(JSON.stringify(dados));
-        enviarDados('dados-pessoais/validacao', dados).then(function(resp) {
+        enviarDados('/dados-pessoais', dados).then(function(resp) {
           alert(JSON.stringify(resp));
         }).catch(function(err) {
           console.log(JSON.stringify(err, null, 2));
@@ -142,6 +169,20 @@
         });
       }
 
+        buscarDadosJson('/conhecimentos').then((resp) => {
+            const elFieldset = document.getElementById('fieldConhecimentos');
+            elFieldset.innerHTML = '';
+
+            let htmlConhecimentos = '<legend>Conhecimentos</legend>';
+            for (const c of resp) {
+                htmlConhecimentos += `
+               <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="conhecimentos" id="chkConhecimento${c.id}" value="${c.id}">
+                  <label class="form-check-label" for="chkConhecimento${c.id}">${c.nome}</label>
+                </div>`
+            }
+            elFieldset.insertAdjacentHTML('beforeend', htmlConhecimentos);
+        })
 </script>
 </body>
 </html>

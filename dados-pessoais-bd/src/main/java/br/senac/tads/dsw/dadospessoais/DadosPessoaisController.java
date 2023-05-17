@@ -1,8 +1,12 @@
 package br.senac.tads.dsw.dadospessoais;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -10,34 +14,43 @@ import java.util.*;
 @RequestMapping("/dados-pessoais")
 public class DadosPessoaisController {
 
-    private Map<String, DadosPessoais> mapPessoas;
-
-    public DadosPessoaisController() {
-        mapPessoas = new LinkedHashMap<>();
-        DadosPessoais dados = new DadosPessoais("Fulano da Silva", "fulano", "fulano@teste.com.br", "(11) 99901-0909", "Abcd$1234", LocalDate.parse("2000-10-20"));
-        mapPessoas.put(dados.getApelido(), dados);
-    }
-
+    @Autowired
+    private DadosPessoaisService service;
 
     @GetMapping
-    public List<DadosPessoais> listar() {
-        return new ArrayList<>(mapPessoas.values());
+    public List<DadosPessoaisDto> findAll(
+            @RequestParam(value = "pagina", defaultValue="0") int pagina,
+            @RequestParam(value = "quantidade", defaultValue="5") int quantidade,
+            @RequestParam(value = "textoBusca", required = false) String textoBusca
+    ) {
+        return service.findAll(pagina, quantidade, textoBusca);
     }
 
     @GetMapping("/{apelido}")
-    public DadosPessoais buscarPorApelido(@PathVariable String apelido) {
-        return mapPessoas.get(apelido);
+    public DadosPessoaisDto findByApelido(@PathVariable String apelido) {
+        return service.findByApelido(apelido);
     }
 
-    @PostMapping(consumes = "application/json")
-    public DadosPessoais incluirNovo(@RequestBody DadosPessoais dados) {
-        mapPessoas.put(dados.getApelido(), dados);
-        return dados;
+    @PostMapping
+    public ResponseEntity<Void> addNew(@RequestBody DadosPessoaisDto dados) {
+        service.addNew(dados);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{apelido}")
+                .buildAndExpand(dados.getApelido()).toUri();
+        return ResponseEntity.created(location).build();
     }
 
-    @PostMapping("/validacao")
-    public DadosPessoais incluirNovoComValidacao(@RequestBody @Valid DadosPessoais dados) {
-        mapPessoas.put(dados.getApelido(), dados);
-        return dados;
+    @PutMapping("/{apelido}")
+    public ResponseEntity<Void> update(
+            @PathVariable String apelido,
+            @RequestBody DadosPessoaisDto dados) {
+        service.update(apelido, dados);
+        return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{apelido}")
+    public ResponseEntity<Void> delete(@PathVariable String apelido) {
+        service.delete(apelido);
+        return ResponseEntity.ok().build();
+    }
+
 }
