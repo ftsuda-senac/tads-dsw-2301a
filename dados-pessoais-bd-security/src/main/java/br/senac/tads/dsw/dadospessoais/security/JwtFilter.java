@@ -17,6 +17,7 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -39,10 +40,19 @@ public class JwtFilter extends OncePerRequestFilter {
                     .build()
                     .parseClaimsJws(jwt);
 
+            String username = claims.getBody().getSubject();
+            List<Papel> papeis = new ArrayList<>();
+            if (claims.getBody().get("scope") != null) {
+                List<String> nomesPapeis = (ArrayList<String>) claims.getBody().get("scope");
+                for (String nome : nomesPapeis) {
+                    papeis.add(new Papel(nome));
+                }
+            }
+
             Authentication auth = new UsernamePasswordAuthenticationToken(
                     claims.getBody().getSubject(),
                     "",
-                    new ArrayList<>());
+                    papeis);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } else {
             SecurityContextHolder.clearContext();

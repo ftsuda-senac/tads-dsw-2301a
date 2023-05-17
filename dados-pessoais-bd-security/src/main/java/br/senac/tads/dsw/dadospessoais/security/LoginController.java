@@ -18,7 +18,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @RestController
@@ -39,12 +41,18 @@ public class LoginController {
 
         UsuarioSistema usuario = (UsuarioSistema) auth.getPrincipal();
 
+        List<String> nomesPapeis = new ArrayList<>();
+        for (Papel papel : usuario.getPapeis()) {
+            nomesPapeis.add(papel.getNome());
+        }
         Claims claims = Jwts.claims()
                 .setSubject(usuario.getUsername());
-        claims.put("fullName", usuario.getNomeCompleto());
+        claims.put("name", usuario.getNomeCompleto());
+        claims.put("scope", nomesPapeis);
 
         Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         Instant expiration = issuedAt.plus(30, ChronoUnit.MINUTES);
+
 
         String jwt = Jwts.builder()
                 .setClaims(claims)

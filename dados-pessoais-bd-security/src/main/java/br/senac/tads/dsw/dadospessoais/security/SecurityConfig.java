@@ -42,6 +42,8 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/login").permitAll()
+                .requestMatchers("/dados-pessoais").hasAuthority("LORD_SITH")
+                .requestMatchers("/conhecimentos").hasAnyAuthority("JEDI")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
