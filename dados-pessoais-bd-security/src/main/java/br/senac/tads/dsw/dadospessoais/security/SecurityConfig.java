@@ -42,6 +42,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/login").permitAll()
+                .requestMatchers("/paginas/**", "/js/**").permitAll()
                 .requestMatchers("/dados-pessoais").hasAuthority("LORD_SITH")
                 .requestMatchers("/conhecimentos").hasAnyAuthority("JEDI")
                 .anyRequest().authenticated()
@@ -70,7 +71,5 @@ public class SecurityConfig {
         // TODO: Melhorar codigo
         return null;
     }
-
-
 
 }

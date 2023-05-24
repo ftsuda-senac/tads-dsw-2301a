@@ -53,7 +53,6 @@ public class LoginController {
         Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         Instant expiration = issuedAt.plus(30, ChronoUnit.MINUTES);
 
-
         String jwt = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(Date.from(issuedAt))
@@ -62,4 +61,5 @@ public class LoginController {
                 .compact();
         return jwt;
     }
+
 }

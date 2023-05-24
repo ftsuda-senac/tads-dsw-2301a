@@ -50,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             Authentication auth = new UsernamePasswordAuthenticationToken(
-                    claims.getBody().getSubject(),
+                    username,
                     "",
                     papeis);
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -59,4 +59,5 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
 }
