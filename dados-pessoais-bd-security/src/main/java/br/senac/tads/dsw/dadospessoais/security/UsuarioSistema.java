@@ -12,6 +12,12 @@ public class UsuarioSistema implements UserDetails {
 
     private String nomeCompleto;
 
+    private String email;
+
+    private String telefone;
+
+    private String arquivoFoto;
+
     private String hashSenha;
 
     private List<Papel> papeis;
@@ -25,6 +31,13 @@ public class UsuarioSistema implements UserDetails {
         this.nomeCompleto = nomeCompleto;
         this.hashSenha = hashSenha;
         this.papeis = papeis;
+    }
+
+    public UsuarioSistema(String username, String nomeCompleto, String hashSenha, String email, String telefone, String arquivoFoto, List<Papel> papeis) {
+        this(username, nomeCompleto, hashSenha, papeis);
+        this.email = email;
+        this.telefone = telefone;
+        this.arquivoFoto = arquivoFoto;
     }
 
     @Override
@@ -90,4 +103,29 @@ public class UsuarioSistema implements UserDetails {
     public void setPapeis(List<Papel> papeis) {
         this.papeis = papeis;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getArquivoFoto() {
+        return arquivoFoto;
+    }
+
+    public void setArquivoFoto(String arquivoFoto) {
+        this.arquivoFoto = arquivoFoto;
+    }
+
 }

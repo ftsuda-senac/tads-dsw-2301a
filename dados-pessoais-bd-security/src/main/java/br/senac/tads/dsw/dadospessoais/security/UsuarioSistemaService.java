@@ -25,12 +25,15 @@ public class UsuarioSistemaService implements UserDetailsService {
         mapUsuarios = new HashMap<>();
         mapUsuarios.put("luke", new UsuarioSistema("luke",
     "Luke Skywalker", passwordEncoder.encode("Abcd1234"),
+                "luke@starwars.com.br", "(11) 99911-1111", "luke.jpg",
                 Arrays.asList(new Papel("PADAWAN"), new Papel("JEDI"))));
         mapUsuarios.put("vader", new UsuarioSistema("vader",
                 "Darth Vader", passwordEncoder.encode("Abcd1234"),
+                "vader@starwars.com.br", "(11) 99922-2222", "vader.jpg",
                 Arrays.asList(new Papel("LORD_SITH"))));
         mapUsuarios.put("kenobi", new UsuarioSistema("kenobi",
                 "Obi Wan Kenobi", passwordEncoder.encode("Abcd1234"),
+                "kenobi@starwars.com.br", "(11) 99933-3333", "kenobi.jpg",
                 Arrays.asList(new Papel("MESTRE"), new Papel("JEDI"))));
     }
 

@@ -42,7 +42,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/login").permitAll()
-                .requestMatchers("/paginas/**", "/js/**").permitAll()
+                .requestMatchers("/paginas/**", "/js/**", "/img/**").permitAll()
                 .requestMatchers("/dados-pessoais").hasAuthority("LORD_SITH")
                 .requestMatchers("/conhecimentos").hasAnyAuthority("JEDI")
                 .anyRequest().authenticated()
