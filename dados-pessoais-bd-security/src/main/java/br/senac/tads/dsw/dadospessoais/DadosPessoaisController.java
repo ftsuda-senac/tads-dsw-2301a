@@ -32,7 +32,7 @@ public class DadosPessoaisController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addNew(@RequestBody DadosPessoaisDto dados) {
+    public ResponseEntity<Void> addNew(@RequestBody @Valid DadosPessoaisDto dados) {
         service.addNew(dados);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{apelido}")
                 .buildAndExpand(dados.getApelido()).toUri();

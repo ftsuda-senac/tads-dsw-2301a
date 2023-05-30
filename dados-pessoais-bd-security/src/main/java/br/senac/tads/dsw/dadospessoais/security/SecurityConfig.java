@@ -39,6 +39,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception  {
 
+        /*
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/login").permitAll()
@@ -53,6 +54,10 @@ public class SecurityConfig {
 
         // Adicionando filtro no fluxo de autorização
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+        */
+        http.csrf().disable()
+                .authorizeHttpRequests()
+                .anyRequest().permitAll();
 
         return http.build();
     }
