@@ -117,7 +117,7 @@
               reject({
                 codigo:  xhr.status,
                 mensagem: 'Erro ao buscar dados',
-                erros: JSON.parse(xhr.responseText)?.errors.map(
+                erros: JSON.parse(xhr.responseText)?.errors?.map(
                   (erro) => ({ campoErro: erro.field, mensagem: erro.defaultMessage })
                  )
               });
